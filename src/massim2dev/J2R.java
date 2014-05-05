@@ -1,14 +1,11 @@
 package massim2dev;
 
-import massim2dev.j2r.AgentGenerator;
 import massim2dev.model.ProjectModel;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -45,6 +42,7 @@ public class J2R {
 		// Generate project and folders/packages
 		project.setCurrentProject(selectedProject);
 		project.generate();
+		
 	}
 	
 	/**

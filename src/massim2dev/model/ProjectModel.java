@@ -1,7 +1,6 @@
 package massim2dev.model;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -27,25 +26,25 @@ import org.eclipse.jdt.core.JavaCore;
  * @author joaolopes
  *
  */
-public class ProjectModel extends ModelGenerator {
+public class ProjectModel {
 
 	/**
 	 * Represents the original project.
 	 */
 	IProject oldProject;
 	IProject newProject;
+	private String name;
 	IJavaProject newJavaProject;
 	private IWorkspaceRoot workspaceRoot;
 
 	public ProjectModel(String name) {
-		this.setName(name);	
+		this.name= name;
 	}
 
 	public void setCurrentProject(IProject oldProject) {
 		this.oldProject = oldProject;
 	}
 
-	@Override
 	/**
 	 * Copy the selected project.
 	 */
@@ -59,7 +58,7 @@ public class ProjectModel extends ModelGenerator {
 		try {
 
 			// Create a handle for the project.
-			newProject = workspaceRoot.getProject(this.getName());
+			newProject = workspaceRoot.getProject(this.name);
 
 			// Delete the contents of any old project with the same name 
 			if (newProject.exists()) {
