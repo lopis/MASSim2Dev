@@ -1,12 +1,10 @@
 package massim2dev.model;
 
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
 /**
@@ -26,6 +24,7 @@ public class PackageModel extends ModelGenerator {
 	 * and projects.
 	 */
 	ModelGenerator[] packageContents;
+	private IPackageFragment thisPackage;
 
 	public PackageModel() {
 
@@ -53,11 +52,23 @@ public class PackageModel extends ModelGenerator {
 				srcFolder.create(true, true, null);
 			}
 			IPackageFragmentRoot srcFragment = project.newJavaProject.getPackageFragmentRoot(srcFolder);
-			IPackageFragment fragment = srcFragment.createPackageFragment(this.getName(), true, null);
+			thisPackage =  srcFragment.createPackageFragment(this.getName(), true, null);
+			generateClasses();
+			
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void generateClasses() {
+		try {
+			IJavaElement[] children = this.thisPackage.getChildren();
+			System.out.println(children);
+		} catch (JavaModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 

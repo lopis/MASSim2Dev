@@ -35,16 +35,16 @@ public class J2R {
 		
 		// Get the selected project. If null, stop execution and ask
 		// the user to select a project to be used.
-		project.setCurrentProject(getCurrentProject());
+		IProject selectedProject = getCurrentProject();
 		
-		if (project.getCurrentProject() == null) {
+		if (selectedProject == null) {
 			System.err.println("No project selected.");
 			return;
 		}
 		
 		// Generate project and folders/packages
+		project.setCurrentProject(selectedProject);
 		project.generate();
-		
 	}
 	
 	/**
@@ -67,7 +67,7 @@ public class J2R {
 				try {
 					// check if we have a Java project
 					if (project.isNatureEnabled("org.eclipse.jdt.core.javanature")) {
-						IJavaProject javaProject = JavaCore.create(project); // throws CoreException
+						// IJavaProject javaProject = JavaCore.create(project); // throws CoreException
 						return project;
 					}
 				} catch (CoreException e) {
