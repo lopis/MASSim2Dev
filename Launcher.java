@@ -1,4 +1,4 @@
-package massim2dev;
+package launcher;
 
 import jade.core.Agent;
 import jade.core.Profile;

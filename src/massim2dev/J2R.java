@@ -42,7 +42,7 @@ public class J2R {
 		// Generate project and folders/packages
 		project.setCurrentProject(selectedProject);
 		project.generate();
-		
+		project.replaceImports();
 	}
 	
 	/**
