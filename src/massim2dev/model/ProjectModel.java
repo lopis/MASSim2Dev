@@ -270,7 +270,7 @@ public class ProjectModel {
 
 
 			} else if(importName.matches(".*\\.repast\\.Launcher")) {
-				String newImport = "Launcher";
+				String newImport = "launcher.Launcher";
 				unit.createImport(newImport, imports[i], null);
 				imports[i].delete(false, null);
 				copyFile("Launcher.java", "launcher");

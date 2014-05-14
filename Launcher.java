@@ -56,7 +56,7 @@ public class Launcher {
 	 * @param ra
 	 * @return
 	 */
-	public void startNewAgent(String name, Agent a) {
+	public void acceptNewAgent(String name, Agent a) {
 		try {
 			container.acceptNewAgent(name, a).start();
 		} catch (StaleProxyException e) {
