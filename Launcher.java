@@ -33,7 +33,7 @@ public class Launcher {
 		profile.setParameter("port", property_port);
 		profile.setParameter("jade_domain_df_maxresult", property_dx_maxresult );
 		container = runtime.createMainContainer(profile);
-		instance = new Launcher();
+		instance = new MyLauncher;
 		instance.setup();
 	}
 	

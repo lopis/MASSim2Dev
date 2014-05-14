@@ -274,11 +274,6 @@ public class ProjectModel {
 				unit.createImport(newImport, imports[i], null);
 				imports[i].delete(false, null);
 				copyFile("Launcher.java", "launcher");
-
-				// Import matches repast.+?
-			} else if (importName.matches("repast\\..+")) {
-				// Remove the import and the class //FIXME
-				imports[i].delete(false, null);
 			} 
 
 
