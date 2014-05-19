@@ -25,63 +25,44 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.JavaRuntime;
 
 /**
- * This class contains settings and objects related
- * to the current conversion session. It also contains
- * the structure for the project tree, i.e. the blueprint
- * for all packages and classes that will be generated.
+ * This class represents a JADE project and is capable of
+ * generating a new JADE project from a SAJaS project.
+ * Call generate() to start this process.
  * @author joaolopes
  *
  */
-public class ProjectModel {
-
-	// Regex that matches all API classes
-	private static final String PREFFIX_REGEX = "up\\.fe\\.liacc\\.sajas\\.";
+public class JADEProjectModel {
 
 	/**
 	 * Represents the original project.
 	 */
 	IProject oldProject;
 	IProject newProject;
-	private String name;
 	IJavaProject newJavaProject;
 	private IWorkspaceRoot workspaceRoot;
-
-
-	// These classes don't have an equivalent in JADE
-	// so they are not converted, but removed.
-	private String[] restrictedImports = {
-			"up/fe/liacc/repacl/ContextWrapper.java",
-			"up/fe/liacc/repacl/MailBox.java",
-			"repast/RepastAgent.java"
-	};
 
 	/**
 	 * Contains the absolute system path to the new project folder. 
 	 */
 	private String newProjectPath;
 
-	public ProjectModel(String name) {
-		this.name= name;
-	}
-
-	public void setCurrentProject(IProject oldProject) {
-		this.oldProject = oldProject;
+	public JADEProjectModel(IProject oldProject) {
+		this.oldProject = oldProject;  
+		workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+		newProject = workspaceRoot.getProject(oldProject.getName());
 	}
 
 	/**
 	 * Copy the selected project.
 	 */
-	public void generate() {
+	public void cloneProject() {
 		if (oldProject == null) {
 			return;
 		}
 
-		workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-
 		try {
 
 			// Create a handle for the project.
-			newProject = workspaceRoot.getProject(this.name);
 			newProjectPath = workspaceRoot.getRawLocation().toString() + newProject.getFullPath().toString();
 
 			// Delete the contents of any old project with the same name 
@@ -171,7 +152,7 @@ public class ProjectModel {
 	 * @param fileName The name of the file inside the plugin.
 	 * @param destPackage The destination package.
 	 */
-	private void copyFile(String fileName, String destPackage) {
+	public void copyFile(String fileName, String destPackage) {
 
 		// Create the package
 		try {
@@ -262,42 +243,12 @@ public class ProjectModel {
 		for (int i = 0; i < imports.length; i++) {
 
 			String importName = imports[i].getElementName();
-
-			// Import matches up.fe.liacc.repacl ?
-			if (importName.matches(PREFFIX_REGEX + ".+")) {
-				// Import in ignored imports list?
-				if (!isRestricted(importName)) {
-					// If not, replace it with its JADE equivalent
-					// And then delete the original import.
-					String newImport = importName.replaceFirst(PREFFIX_REGEX, "jade.");
-					unit.createImport(newImport, imports[i], null);
-				}
-				imports[i].delete(false, null);
-
-
-			} else if(importName.matches(".*\\.repast\\.Launcher")) {
-				String newImport = "launcher.Launcher";
+			String newImport = Dictionary.getJADEClass(importName);
+			if (newImport != null) {
 				unit.createImport(newImport, imports[i], null);
 				imports[i].delete(false, null);
-				copyFile("Launcher.java", "launcher");
-			} 
-
-
-			//			if (unit.getType(elementName).getSuperclassName().equals("Launcher")) {
-			//				System.out.println("OMGGGGGGGGGGGGGGGGGGG");
-			//				String launcherName = "Launcher.java";
-			//				copyFile(launcherName);
-			//			}
-		}
-	}
-
-	private boolean isRestricted(String elementName) {
-		for (int i = 0; i < restrictedImports.length; i++) {
-			if (elementName.equals(restrictedImports[i])) {
-				return true;
 			}
 		}
-		return false;
 	}
 
 }

@@ -2,8 +2,9 @@ package massim2dev.model;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 /**
@@ -17,14 +18,14 @@ public class Dictionary {
 
 
 	/**
-	 * Contains the mappings of SAJaS classes to JADE classes
-	 */
-	private static HashMap<String, String> forward = new HashMap<String, String>();
-
-	/**
 	 * Contains the mappings of JADE classes to SAJaS classes
 	 */
-	private static HashMap<String, String> backward = new HashMap<String, String>();
+	private static HashMap<String, String> jade2sajas = new HashMap<String, String>();
+
+	/**
+	 * Contains the mappings of SAJaS classes to JADE classes
+	 */
+	private static HashMap<String, String> sajas2jade = new HashMap<String, String>();
 
 	/**
 	 * Adds a new mapping to the dictionary.
@@ -32,48 +33,61 @@ public class Dictionary {
 	 * @param sajasClass
 	 */
 	public static void add(String jadeClass, String sajasClass) {
-		forward.put(jadeClass, sajasClass);
-		backward.put(sajasClass, jadeClass);
+		jade2sajas.put(jadeClass, sajasClass);
+		sajas2jade.put(sajasClass, jadeClass);
 	}
 
 	public void remove(String className) {
-		forward.remove(className);
-		backward.remove(className);
+		jade2sajas.remove(className);
+		sajas2jade.remove(className);
 	}
 
+	/**
+	 * Get the corresponding JADE class, given a SAJaS class
+	 * @param sajasClass
+	 * @return The JADE class, or null if there is no mapping.
+	 */
 	public static String getJADEClass(String sajasClass) {
-		return forward.get(sajasClass);
+		HashMap<String, String> mapping = sajas2jade;
+		String jadeClass = mapping.get(sajasClass);
+		return jadeClass;
 	}
 
 	public static String getSAJaSClass(String jadeClass) {
-		return backward.get(jadeClass);
+		return jade2sajas.get(jadeClass);
 	}
 
-	public static void loadDictionaryFile(String fileName){
-	    try(BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-	        String line = br.readLine();
+	public static boolean loadDictionaryFile(String fileName){
+		InputStream in = Dictionary.class.getClassLoader().getResourceAsStream(fileName);
 
-	        while (line != null) {
-	        	line.replaceAll("\\s+", "");
-	        	
-	        	
-	        	if (line.length() > 0 &&	 // Ignore empty lines
-	        		line.charAt(0) != '#') { // Ingore comments
-	        		
-	        		String[] entry = line.split("|");
-	        		if (entry.length == 2) {
-	        			add(entry[1], entry[0]);
+		try{
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String line = br.readLine();
+			
+			while (line != null) {
+				line = line.replaceAll("\\s+", "");
+
+				if (line.length() > 0 &&	 // Ignore empty lines
+						line.charAt(0) != '#') { // Ingore comments
+
+					String[] entry = line.split("\\|");
+					if (entry.length == 2) {
+						add(entry[1], entry[0]);
 					}
-	        	}
-	        	
-	            line = br.readLine();	            
-	        }
-	    } catch (FileNotFoundException e) {
+				}
+
+				line = br.readLine();	            
+			}
+
+		} catch (FileNotFoundException e) {
 			System.err.println("Dictionary file not found. Quiting.");
+			return false;
 		} catch (IOException e) {
 			System.err.println("IOException. Failed to load dictionary. Quiting.");
+			return false;
 		}
-	    
-	    System.out.println("Dictionary loaded");
+
+		System.out.println("Dictionary loaded");
+		return true;
 	}
 }

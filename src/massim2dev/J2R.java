@@ -1,7 +1,7 @@
 package massim2dev;
 
 import massim2dev.model.Dictionary;
-import massim2dev.model.ProjectModel;
+import massim2dev.model.JADEProjectModel;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IProject;
@@ -19,7 +19,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class J2R {
 
-	ProjectModel project;
+	JADEProjectModel project;
 
 	/**
 	 * Loads the currently selected project and initiates the
@@ -27,24 +27,23 @@ public class J2R {
 	 */
 	public void convertCurrent(ExecutionEvent event) {
 
+		if(!Dictionary.loadDictionaryFile("dictionary"))
+			return;
+		
+		// Get the selected project. If null, stop execution and ask
+		// the user to select a project to be used.
 		IProject selectedProject = getCurrentProject();
-
 		if (selectedProject == null) {
 			System.err.println("No project selected.");
 			return;
 		}
-		String name = selectedProject.getName() + "_generated"; //TODO: prompt the user to define this name
-		project = new ProjectModel(name);
 		
+		project = new JADEProjectModel(selectedProject);
 		System.out.println("Selected Project: " + selectedProject.getName());
-		Dictionary.loadDictionaryFile("dictionary");
 
-		// Get the selected project. If null, stop execution and ask
-		// the user to select a project to be used.
-
-		// Generate project and folders/packages
-		project.setCurrentProject(selectedProject);
-		project.generate();
+		// Clone the project and packages
+		project.cloneProject();
+		// Perform transformations
 		project.replaceImports();
 	}
 

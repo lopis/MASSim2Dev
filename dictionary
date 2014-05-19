@@ -26,3 +26,6 @@ up.fe.liacc.sajas.proto.ProposeInitiator | jade.proto.ProposeInitiator
 up.fe.liacc.sajas.proto.ProposeResponder | jade.proto.ProposeResponder
 
 up.fe.liacc.sajas.wrapper.AgentController | jade.wrapper.AgentController
+
+up.fe.liacc.sajas.domain.FIPAAgentManagement.DFAgentDescription | jade.domain.FIPAAgentManagement.DFAgentDescription
+up.fe.liacc.sajas.domain.FIPAAgentManagement.ServiceDescription | jade.domain.FIPAAgentManagement.ServiceDescription
