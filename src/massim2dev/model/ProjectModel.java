@@ -237,6 +237,7 @@ public class ProjectModel {
 			IPackageFragment[] packages = newJavaProject.getPackageFragments();
 			for (IPackageFragment aPackage : packages) {
 				if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
+					System.out.println("Package " + aPackage.getElementName());
 					// The compilation unit is a class
 					for (ICompilationUnit unit : aPackage.getCompilationUnits()) {
 						System.out.println(" class name: " + unit.getElementName());
@@ -250,6 +251,11 @@ public class ProjectModel {
 		}
 	}
 
+	/**
+	 * Replaces all imports in this compilation unit.
+	 * @param unit The compilation unit (the class object)
+	 * @throws JavaModelException If an element doesn't exist
+	 */
 	private void replaceImports(ICompilationUnit unit) throws JavaModelException {
 		IImportDeclaration[] imports = unit.getImports();
 

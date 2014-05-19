@@ -1,0 +1,28 @@
+# This dictionary contains the mapping of classes between
+# JADE and SAJaS. Each line is an entry to the dictionary.
+# On the left side is the SAJaS class and on the left side
+# is the corresponding JADE class, separated by a pipe ' | '.
+# Empty lines and lines starting with '#' are ignored.
+# Spaces are removed.
+
+up.fe.liacc.sajas.core.Agent | jade.core.Agent
+up.fe.liacc.sajas.core.AID | jade.core.AID
+
+up.fe.liacc.sajas.domain.AMSService | jade.domain.AMSService
+up.fe.liacc.sajas.domain.DFService | jade.domain.DFService
+up.fe.liacc.sajas.domain.FIPAException | jade.domain.FIPAException
+up.fe.liacc.sajas.domain.FIPANames | jade.domain.FIPANames
+
+up.fe.liacc.sajas.lang.acl.ACLMessage | jade.lang.acl.ACLMessage
+up.fe.liacc.sajas.lang.acl.MessageTemplate | jade.lang.acl.MessageTemplate
+up.fe.liacc.sajas.lang.acl.UnreadableException | jade.lang.acl.UnreadableException
+
+up.fe.liacc.sajas.proto.AchieveREInitiator | jade.proto.AchieveREInitiator
+up.fe.liacc.sajas.proto.AchieveREResponder | jade.proto.AchieveREResponder
+up.fe.liacc.sajas.proto.ContractNetInitiator | jade.proto.ContractNetInitiator
+up.fe.liacc.sajas.proto.ContractNetResponder | jade.proto.ContractNetResponder
+up.fe.liacc.sajas.proto.FSMBehaviour | jade.proto.FSMBehaviour
+up.fe.liacc.sajas.proto.ProposeInitiator | jade.proto.ProposeInitiator
+up.fe.liacc.sajas.proto.ProposeResponder | jade.proto.ProposeResponder
+
+up.fe.liacc.sajas.wrapper.AgentController | jade.wrapper.AgentController

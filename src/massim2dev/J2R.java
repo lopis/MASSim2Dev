@@ -1,5 +1,6 @@
 package massim2dev;
 
+import massim2dev.model.Dictionary;
 import massim2dev.model.ProjectModel;
 
 import org.eclipse.core.commands.ExecutionEvent;
@@ -17,7 +18,7 @@ import org.eclipse.ui.PlatformUI;
  *
  */
 public class J2R {
-	
+
 	ProjectModel project;
 
 	/**
@@ -25,26 +26,28 @@ public class J2R {
 	 * conversion process. 
 	 */
 	public void convertCurrent(ExecutionEvent event) {
-		
-		String name = "generated-project"; //TODO: prompt the user to define this name
-		
-		project = new ProjectModel(name);
-		
-		// Get the selected project. If null, stop execution and ask
-		// the user to select a project to be used.
+
 		IProject selectedProject = getCurrentProject();
-		
+
 		if (selectedProject == null) {
 			System.err.println("No project selected.");
 			return;
 		}
+		String name = selectedProject.getName() + "_generated"; //TODO: prompt the user to define this name
+		project = new ProjectModel(name);
 		
+		System.out.println("Selected Project: " + selectedProject.getName());
+		Dictionary.loadDictionaryFile("dictionary");
+
+		// Get the selected project. If null, stop execution and ask
+		// the user to select a project to be used.
+
 		// Generate project and folders/packages
 		project.setCurrentProject(selectedProject);
 		project.generate();
 		project.replaceImports();
 	}
-	
+
 	/**
 	 * @return The currently selected project in the package explorer.
 	 * Returns null if no project is selected. Even if a file inside a project
@@ -55,7 +58,7 @@ public class J2R {
 		if (window != null) {
 			IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
 			Object firstElement = selection.getFirstElement();
-			
+
 			// IAdaptable is an eclipse interface that is implemented by
 			// lots of other interfaces. Basically what this does is filter
 			// any selected object like a class, package, folder, etc in the
@@ -73,7 +76,7 @@ public class J2R {
 				}
 			}
 		}
-		
+
 		return null;
 	}
 }
