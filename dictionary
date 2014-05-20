@@ -8,6 +8,8 @@
 up.fe.liacc.sajas.core.Agent | jade.core.Agent
 up.fe.liacc.sajas.core.AID | jade.core.AID
 
+up.fe.liacc.sajas.core.behaviours.SimpleBehaviour | jade.core.behaviours.SimpleBehaviour
+
 up.fe.liacc.sajas.domain.AMSService | jade.domain.AMSService
 up.fe.liacc.sajas.domain.DFService | jade.domain.DFService
 up.fe.liacc.sajas.domain.FIPAException | jade.domain.FIPAException
@@ -21,7 +23,7 @@ up.fe.liacc.sajas.proto.AchieveREInitiator | jade.proto.AchieveREInitiator
 up.fe.liacc.sajas.proto.AchieveREResponder | jade.proto.AchieveREResponder
 up.fe.liacc.sajas.proto.ContractNetInitiator | jade.proto.ContractNetInitiator
 up.fe.liacc.sajas.proto.ContractNetResponder | jade.proto.ContractNetResponder
-up.fe.liacc.sajas.proto.FSMBehaviour | jade.proto.FSMBehaviour
+up.fe.liacc.sajas.proto.FSMBehaviour | jade.core.behaviours.FSMBehaviour;
 up.fe.liacc.sajas.proto.ProposeInitiator | jade.proto.ProposeInitiator
 up.fe.liacc.sajas.proto.ProposeResponder | jade.proto.ProposeResponder
 
@@ -29,5 +31,6 @@ up.fe.liacc.sajas.wrapper.AgentController | jade.wrapper.AgentController
 
 up.fe.liacc.sajas.domain.FIPAAgentManagement.DFAgentDescription | jade.domain.FIPAAgentManagement.DFAgentDescription
 up.fe.liacc.sajas.domain.FIPAAgentManagement.ServiceDescription | jade.domain.FIPAAgentManagement.ServiceDescription
+up.fe.liacc.sajas.domain.FIPAAgentManagement.SearchConstraints | jade.domain.FIPAAgentManagement.SearchConstraints
 
 up.fe.liacc.sajas.core.behaviours.Behaviour | jade.core.behaviours.Behaviour
