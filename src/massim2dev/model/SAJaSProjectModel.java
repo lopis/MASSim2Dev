@@ -86,12 +86,19 @@ public class SAJaSProjectModel {
 			//  - Add "jade.jar" as a library and copy that jar from within the plugin
 			//  - Add the JRE container too
 			newJavaProject = JavaCore.create(newProject);
-			String jarName = "repast.simphony.bin_and_src.jar";
-			copyJar(jarName);
-			IPath repastLibPath = new Path(newProjectPath + "/" + jarName);
+			
+			String repastJar = "repast.simphony.bin_and_src.jar";
+			copyJar(repastJar);
+			IPath repastLibPath = new Path(newProjectPath + "/" + repastJar);
+			String sajasJar = "sajas.jar";
+			copyJar(sajasJar);
+			IPath sajasLibPath = new Path(newProjectPath + "/" + sajasJar);
+			
+			
 			IClasspathEntry[] buildPath = {
 					JavaCore.newSourceEntry(newProject.getFullPath().append("src")),
 					JavaCore.newLibraryEntry(repastLibPath , null, null),
+					JavaCore.newLibraryEntry(sajasLibPath , null, null),
 					JavaRuntime.getDefaultJREContainerEntry()};
 			
 			newJavaProject.setRawClasspath(buildPath, newProject.getFullPath().append("bin"), null);
@@ -247,13 +254,21 @@ public class SAJaSProjectModel {
 
 			String importName = imports[i].getElementName();
 			Entry newImport = Dictionary.get(importName);
+			
 			if (newImport != null) {
-				unit.createImport(newImport.value, imports[i], null);
-				imports[i].delete(false, null);
-				
 				if (newImport.isSuperClass) {
 					// Change the super class to this one
 					Utils.setSuperClass(unit, newImport.value, importName);
+					unit.createImport(newImport.value, imports[i], null);
+					if (newImport.alternative != null) {
+						unit.createImport(newImport.alternative, imports[i], null);
+					}
+					imports[i].delete(false, null);
+					
+				} else {
+					// Change just the import
+					unit.createImport(newImport.value, imports[i], null);
+					imports[i].delete(false, null);
 				}
 			}
 		}

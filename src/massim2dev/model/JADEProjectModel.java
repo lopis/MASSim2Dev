@@ -251,6 +251,11 @@ public class JADEProjectModel {
 				if (newImport.isSuperClass) {
 					// Change the super class to this one
 					Utils.setSuperClass(unit, newImport.value, importName);
+					unit.createImport(newImport.value, imports[i], null);
+					if (newImport.alternative != null) {
+						unit.createImport(newImport.alternative, imports[i], null);
+					}
+					imports[i].delete(false, null);
 					
 				} else {
 					// Change just the import

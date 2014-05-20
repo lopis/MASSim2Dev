@@ -14,7 +14,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Type;
 
 public class Utils {
 

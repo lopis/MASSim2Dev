@@ -26,7 +26,7 @@ public class SuperClassVisitor extends ASTVisitor{
 			Name newName = node.getAST().newName(newSuperClass);
 			SimpleType newType = node.getAST().newSimpleType(newName);
 			
-			if (superClass.equals(oldType)) {
+			if (superClass != null && superClass.toString().equals(oldType)) {
 				node.setSuperclassType(newType);				
 			}
 		}

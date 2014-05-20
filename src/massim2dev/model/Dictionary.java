@@ -58,13 +58,29 @@ public class Dictionary {
 				if (line.length() > 0 &&	 // Ignore empty lines
 						line.charAt(0) != '#') { // Ingore comments
 
-					boolean is = (line.charAt(0) == '$'); // Parse superclasses
+					boolean is = (line.charAt(0) == '§'); // Parse superclasses
 					if (is) {
 						line = line.substring(1);
-					}
-					String[] entry = line.split("\\|");
-					if (entry.length == 2) {
-						add(entry[0], new Entry(entry[1], is));
+						String[] entry = line.split("\\|");
+						
+						if (entry.length == 2 ) {
+							String[] alternatives = entry[1].split("§");
+							
+							if (alternatives.length == 2) {
+								add(entry[0], new Entry(alternatives[0], alternatives[1], is));
+								System.out.println(entry[0] + " - " +  alternatives[0] + " - " +  alternatives[1]);
+							} else {
+								add(entry[0], new Entry(entry[1], is));
+								System.out.println(entry[0] + " - " +  entry[1]);
+							}
+						} 
+						
+					} else {
+						String[] entry = line.split("\\|");
+						if (entry.length == 2) {
+							add(entry[0], new Entry(entry[1], is));
+						}
+						
 					}
 				}
 
