@@ -5,11 +5,16 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Type;
 
 public class Utils {
 
@@ -21,7 +26,7 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * @return The currently selected project in the package explorer.
 	 * Returns null if no project is selected. Even if a file inside a project
@@ -54,4 +59,18 @@ public class Utils {
 		return null;
 	}
 
+
+	public static Type getSuperClass(ICompilationUnit unit) {
+		ASTParser parser = ASTParser.newParser(AST.JLS4);
+		parser.setKind(ASTParser.K_COMPILATION_UNIT);
+		parser.setSource(unit);
+		parser.setResolveBindings(true);
+
+		// Now create the AST for the ICompilationUnits
+		CompilationUnit astUnit = (CompilationUnit) parser.createAST(null);
+		SuperClassVisitor visitor = new SuperClassVisitor();
+		astUnit.accept(visitor);
+
+		return visitor.superClass;
+	}
 }
