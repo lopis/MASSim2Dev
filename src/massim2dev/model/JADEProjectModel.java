@@ -24,6 +24,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.JavaRuntime;
 
+import plugin.Utils;
+
 /**
  * This class represents a JADE project and is capable of
  * generating a new JADE project from a SAJaS project.
@@ -243,10 +245,18 @@ public class JADEProjectModel {
 		for (int i = 0; i < imports.length; i++) {
 
 			String importName = imports[i].getElementName();
-			String newImport = Dictionary.getJADEClass(importName);
+			Entry newImport = Dictionary.get(importName);
+			
 			if (newImport != null) {
-				unit.createImport(newImport, imports[i], null);
-				imports[i].delete(false, null);
+				if (newImport.isSuperClass) {
+					// Change the super class to this one
+					Utils.setSuperClass(unit, newImport.value, importName);
+					
+				} else {
+					// Change just the import
+					unit.createImport(newImport.value, imports[i], null);
+					imports[i].delete(false, null);
+				}
 			}
 		}
 	}

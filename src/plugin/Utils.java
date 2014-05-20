@@ -60,7 +60,12 @@ public class Utils {
 	}
 
 
-	public static Type getSuperClass(ICompilationUnit unit) {
+	/**
+	 * Sets the superclass of this class
+	 * @param unit The compilation unit (the class)
+	 * @param value The name of the superclass
+	 */
+	public static void setSuperClass(ICompilationUnit unit, String newImportName, String oldImportName) {
 		ASTParser parser = ASTParser.newParser(AST.JLS4);
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
 		parser.setSource(unit);
@@ -68,9 +73,7 @@ public class Utils {
 
 		// Now create the AST for the ICompilationUnits
 		CompilationUnit astUnit = (CompilationUnit) parser.createAST(null);
-		SuperClassVisitor visitor = new SuperClassVisitor();
+		SuperClassVisitor visitor = new SuperClassVisitor(newImportName, oldImportName);
 		astUnit.accept(visitor);
-
-		return visitor.superClass;
 	}
 }

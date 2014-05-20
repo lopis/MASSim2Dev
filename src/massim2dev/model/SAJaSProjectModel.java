@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IImportDeclaration;
@@ -22,6 +23,8 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.JavaRuntime;
+
+import plugin.Utils;
 
 /**
  * This class represents a JADE project and is capable of
@@ -83,9 +86,12 @@ public class SAJaSProjectModel {
 			//  - Add "jade.jar" as a library and copy that jar from within the plugin
 			//  - Add the JRE container too
 			newJavaProject = JavaCore.create(newProject);
-
+			String jarName = "repast.simphony.bin_and_src.jar";
+			copyJar(jarName);
+			IPath repastLibPath = new Path(newProjectPath + "/" + jarName);
 			IClasspathEntry[] buildPath = {
 					JavaCore.newSourceEntry(newProject.getFullPath().append("src")),
+					JavaCore.newLibraryEntry(repastLibPath , null, null),
 					JavaRuntime.getDefaultJREContainerEntry()};
 			
 			newJavaProject.setRawClasspath(buildPath, newProject.getFullPath().append("bin"), null);
@@ -240,10 +246,15 @@ public class SAJaSProjectModel {
 		for (int i = 0; i < imports.length; i++) {
 
 			String importName = imports[i].getElementName();
-			String newImport = Dictionary.getSAJaSClass(importName);
+			Entry newImport = Dictionary.get(importName);
 			if (newImport != null) {
-				unit.createImport(newImport, imports[i], null);
+				unit.createImport(newImport.value, imports[i], null);
 				imports[i].delete(false, null);
+				
+				if (newImport.isSuperClass) {
+					// Change the super class to this one
+					Utils.setSuperClass(unit, newImport.value, importName);
+				}
 			}
 		}
 	}
