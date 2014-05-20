@@ -49,7 +49,7 @@ public class JADEProjectModel {
 	public JADEProjectModel(IProject oldProject) {
 		this.oldProject = oldProject;  
 		workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-		newProject = workspaceRoot.getProject(oldProject.getName());
+		newProject = workspaceRoot.getProject(oldProject.getName() + "_generated");
 	}
 
 	/**
