@@ -18,28 +18,22 @@ public class Dictionary {
 
 
 	/**
-	 * Contains the mappings of JADE classes to SAJaS classes
+	 * Contains the mappings of the classes
 	 */
-	private static HashMap<String, String> jade2sajas = new HashMap<String, String>();
+	private static HashMap<String, Entry> dictionary = new HashMap<String, Entry>();
 
-	/**
-	 * Contains the mappings of SAJaS classes to JADE classes
-	 */
-	private static HashMap<String, String> sajas2jade = new HashMap<String, String>();
 
 	/**
 	 * Adds a new mapping to the dictionary.
 	 * @param jadeClass
-	 * @param sajasClass
+	 * @param class
 	 */
-	public static void add(String jadeClass, String sajasClass) {
-		jade2sajas.put(jadeClass, sajasClass);
-		sajas2jade.put(sajasClass, jadeClass);
+	public static void add(String key, Entry type) {
+		dictionary.put(key, type);
 	}
 
-	public void remove(String className) {
-		jade2sajas.remove(className);
-		sajas2jade.remove(className);
+	public void remove(Entry className) {
+		dictionary.remove(className);
 	}
 
 	/**
@@ -47,14 +41,8 @@ public class Dictionary {
 	 * @param sajasClass
 	 * @return The JADE class, or null if there is no mapping.
 	 */
-	public static String getJADEClass(String sajasClass) {
-		HashMap<String, String> mapping = sajas2jade;
-		String jadeClass = mapping.get(sajasClass);
-		return jadeClass;
-	}
-
-	public static String getSAJaSClass(String jadeClass) {
-		return jade2sajas.get(jadeClass);
+	public static Entry get(String type) {
+		return dictionary.get(type);
 	}
 
 	public static boolean loadDictionaryFile(String fileName){
@@ -63,16 +51,20 @@ public class Dictionary {
 		try{
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String line = br.readLine();
-			
+
 			while (line != null) {
 				line = line.replaceAll("\\s+", "");
 
 				if (line.length() > 0 &&	 // Ignore empty lines
 						line.charAt(0) != '#') { // Ingore comments
 
+					boolean is = (line.charAt(0) == '$'); // Parse superclasses
+					if (is) {
+						line = line.substring(1);
+					}
 					String[] entry = line.split("\\|");
 					if (entry.length == 2) {
-						add(entry[1], entry[0]);
+						add(entry[0], new Entry(entry[1], is));
 					}
 				}
 
