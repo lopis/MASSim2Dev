@@ -26,11 +26,10 @@ public class SuperClassVisitor extends ASTVisitor{
 			Name newName = node.getAST().newName(newSuperClass);
 			SimpleType newType = node.getAST().newSimpleType(newName);
 			
-			if (superClass != null && superClass.toString().equals(oldType)) {
+			if (superClass != null && superClass.equals(oldType)) {
 				node.setSuperclassType(newType);				
 			}
 		}
-		System.out.println("[S] " + newSuperClass);
 		return true;
 	}
-}
+} 
