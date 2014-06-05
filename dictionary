@@ -54,6 +54,12 @@ jade.proto.ContractNetResponder | up.fe.liacc.sajas.proto.ContractNetResponder
 up.fe.liacc.sajas.core.behaviours.FSMBehaviour | jade.core.behaviours.FSMBehaviour
 jade.core.behaviours.FSMBehaviour | up.fe.liacc.sajas.core.behaviours.FSMBehaviour
 
+up.fe.liacc.sajas.proto.SSContractNetResponder | jade.proto.SSContractNetResponder
+jade.proto.SSContractNetResponder | up.fe.liacc.sajas.proto.SSContractNetResponder 
+
+up.fe.liacc.sajas.proto.SSResponderDispatcher | jade.proto.SSResponderDispatcher
+jade.proto.SSResponderDispatcher | up.fe.liacc.sajas.proto.SSResponderDispatcher 
+
 up.fe.liacc.sajas.proto.ProposeInitiator | jade.proto.ProposeInitiator
 jade.proto.ProposeInitiator | up.fe.liacc.sajas.proto.ProposeInitiator
 
